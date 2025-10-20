@@ -3,6 +3,7 @@ package marketplace.notificationservice.dtos;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -15,5 +16,6 @@ public class GraphQLResponse {
   @AllArgsConstructor
   public static class Data {
     private UserDTO getUser;
+    private List<UserDTO> listUsers;
   }
 }
