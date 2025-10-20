@@ -14,6 +14,25 @@ services:
     networks:
       - notification_network
 
+  notification-service:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: notification-service
+    ports:
+      - "8085:8085"
+    env_file:
+      - .env
+    environment:
+      SPRING_RABBITMQ_HOST: rabbit
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+    depends_on:
+      - rabbit
+    networks:
+      - notification_network
+
 networks:
     notification_network:
        external: true

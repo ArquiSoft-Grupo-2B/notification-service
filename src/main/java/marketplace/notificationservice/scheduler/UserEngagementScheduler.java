@@ -49,9 +49,10 @@ public class UserEngagementScheduler {
 
       for (UserDTO user : users) {
         try {
-          // Validar que el usuario tenga email
-          if (user.getEmail() == null || user.getEmail().isBlank()) {
-            log.warn("Usuario {} no tiene email registrado. Saltando...", user.getId());
+          // Validar que el usuario tenga email válido
+          if (user.getEmail() == null || user.getEmail().isBlank() || !isValidEmail(user.getEmail())) {
+            log.warn("⚠️ Usuario {} ({}) no tiene email válido registrado. Email: '{}'. Saltando...",
+                user.getId(), user.getAlias(), user.getEmail());
             failCount++;
             continue;
           }
@@ -69,7 +70,8 @@ public class UserEngagementScheduler {
           Thread.sleep(100);
 
         } catch (Exception e) {
-          log.error("❌ Error al enviar email a usuario {}: {}", user.getId(), e.getMessage());
+          log.error("❌ Error al enviar email a usuario {} ({}): {}",
+              user.getId(), user.getEmail(), e.getMessage(), e);
           failCount++;
         }
       }
@@ -145,5 +147,11 @@ public class UserEngagementScheduler {
         "Las personas que caminan regularmente tienen mejor memoria que las sedentarias. 🧠💪"
     };
     return facts[random.nextInt(facts.length)];
+  }
+
+  private boolean isValidEmail(String email) {
+    // Expresión regular simple para validar formato de email
+    String emailRegex = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$";
+    return email.matches(emailRegex);
   }
 }
