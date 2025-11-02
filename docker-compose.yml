@@ -12,13 +12,13 @@ services:
       - ../rabbitmq/data:/var/lib/rabbitmq
       - ../rabbitmq/log:/var/log/rabbitmq
     networks:
-      - notification_network
+      - backend_net
 
   notification-service:
     build:
       context: .
       dockerfile: dockerfile
-    container_name: notification-service
+    container_name: backend_net
     ports:
       - "8085:8085"
     env_file:
@@ -31,9 +31,8 @@ services:
     depends_on:
       - rabbit
     networks:
-      - notification_network
+      - backend_net
 
 networks:
-    notification_network:
-       external: true
-       name: routes_shared_network
+  backend_net:
+    external: true
