@@ -17,7 +17,7 @@ services:
     build:
       context: .
       dockerfile: dockerfile
-    container_name: backend_net
+    container_name: notification-service
     env_file:
       - .env
     environment:
